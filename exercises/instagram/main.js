@@ -1,6 +1,3 @@
-// import close from "./assets/close_icon.svg";
-// import media from "./assets/media_icon.svg";
-// import arrow from "./assets/arrow_back_icon.svg";
 import close from "./assets/close_icon.svg";
 import media from "./assets/media_icon.svg";
 import arrow from "./assets/arrow_back_icon.svg";
@@ -33,22 +30,154 @@ const modal = `
                 </div>
               `;
 
-// 지시사항에 맞춰 자바스크립트 코드를 작성하세요.
-const $modalOpenBtn = document.getElementById("add-post");
-
-function modalOpen() {
-    const $modalLayout = document.createElement("div");
-    $modalLayout.setAttribute("class", "modal__layout");
-    $modalLayout.innerHTML = modal;
-
-    document.body.prepend($modalLayout);
-
-    const $modalClose = document.querySelector(".modal__close > img");
-    function modalClose() {
-        document.body.removeChild($modalLayout);
-    }
-
-    $modalClose.addEventListener("click", modalClose);
+function createPost(img) {
+    return `
+          <div class="modal__post">
+            <img width="478px" height="478px" src=${img} alt="image" />
+            <div class="modal__write">
+              <textarea placeholder="문구 입력..." autofocus></textarea>
+            </div>
+          </div>
+        `;
 }
 
-$modalOpenBtn.addEventListener("click", modalOpen);
+function createModal() {
+    const modalEl = document.createElement("div");
+    modalEl.setAttribute("class", "modal__layout");
+    modalEl.innerHTML = modal;
+
+    document.querySelector("body").prepend(modalEl);
+
+    document
+        .querySelector(".modal__close")
+        .addEventListener("click", function () {
+            document.querySelector("body").removeChild(modalEl);
+        });
+
+    const fileEl = document.querySelector("#file");
+    fileEl.addEventListener("input", function () {
+        let reader = new FileReader();
+
+        reader.readAsDataURL(fileEl.files[0]);
+
+        reader.onload = function () {
+            const imageBase64 = reader.result;
+
+            document
+                .querySelector(".modal__card")
+                .setAttribute("class", "modal__card write--post");
+            document
+                .querySelector(".modal__main")
+                .setAttribute("class", "modal__main write--post");
+
+            const backBtn = document.querySelector(".modal__back > img");
+            const shareBtn = document.querySelector(".modal__header > p");
+
+            backBtn.style.visibility = "visible";
+            shareBtn.style.visibility = "visible";
+
+            document.querySelector(".modal__main").innerHTML =
+                createPost(imageBase64);
+
+            backBtn.addEventListener("click", function () {
+                document.querySelector("body").removeChild(modalEl);
+                createModal();
+            });
+
+            shareBtn.addEventListener("click", function () {
+                const databaseName = "instagram";
+                const version = 1;
+                const data = {
+                    content: document.querySelector(".modal__write > textarea")
+                        .value,
+                    image: imageBase64,
+                };
+
+                if (window.indexedDB) {
+                    const request = indexedDB.open(databaseName, version);
+
+                    // IndexedDB와 ObjectStore 생성 코드를 페이지 최초 진입시에 실행할 수 있도록 옮겨주세요.
+
+                    request.onsuccess = function () {
+                        const store = request.result
+                            .transaction("posts", "readwrite")
+                            .objectStore("posts");
+
+                        store.add(data).onsuccess = function () {
+                            store.getAll().onsuccess = function (e) {
+                                const response = e.target.result;
+                                document
+                                    .querySelector("body")
+                                    .removeChild(modalEl);
+                                const mainPostsEl =
+                                    document.querySelector(".main__posts");
+                                mainPostsEl.setAttribute(
+                                    "class",
+                                    "main__posts"
+                                );
+                                mainPostsEl.innerHTML = "";
+                                for (let i = 0; i < response.length; i++) {
+                                    const postListEl =
+                                        document.createElement("img");
+                                    postListEl.setAttribute(
+                                        "src",
+                                        response[i].image
+                                    );
+                                    mainPostsEl.appendChild(postListEl);
+                                }
+                                // 모달 창에서 포스트를 정상적으로 저장 이후
+                                // 지시사항에 맞춰 코드를 작성해주세요.
+                            };
+                        };
+                    };
+                }
+            });
+        };
+
+        reader.onerror = function (error) {
+            alert("Error: ", error);
+            document.querySelector("body").removeChild(modalEl);
+        };
+    });
+}
+
+function main() {
+    document.querySelector("#add-post").addEventListener("click", createModal);
+
+    const databaseName = "instagram";
+    const version = 1;
+
+    if (window.indexedDB) {
+        const request = indexedDB.open(databaseName, version);
+        request.onupgradeneeded = function () {
+            request.result.createObjectStore("posts", { autoIncrement: true });
+        };
+        request.onsuccess = function () {
+            const store = request.result
+                .transaction("posts", "readwrite")
+                .objectStore("posts");
+            store.getAll().onsuccess = function (e) {
+                const response = e.target.result;
+                console.log(response);
+                if (response.length !== 0) {
+                    document.querySelector(".main__posts").innerHTML = "";
+                    for (let i = 0; i < response.length; i++) {
+                        const postListEl = document.createElement("img");
+                        postListEl.setAttribute("src", response[i].image);
+                        document
+                            .querySelector(".main__posts")
+                            .appendChild(postListEl);
+                    }
+                } else {
+                    document
+                        .querySelector(".main__posts")
+                        .setAttribute("class", "main__posts not-posts");
+                }
+                // 최초 페이지를 진입할 때,
+                // 지시사항에 맞춰 코드를 작성해주세요.
+            };
+        };
+    }
+}
+
+main();
