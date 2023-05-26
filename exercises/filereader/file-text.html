@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>FileReader 텍스트 파일 읽기</title>
+
+        <style>
+            pre {
+                padding: 20px;
+                box-sizing: border-box;
+                background-color: #eee;
+            }
+        </style>
+    </head>
+    <body>
+        <pre id="preview">텍스트 파일 내용 출력 영역</pre>
+        <!-- accept="text/*" 텍스트 파일만 열수 있도록 설정 -->
+        <input type="file" id="getfile" accept="text/*" />
+
+        <script>
+            const $file = document.getElementById("getfile");
+
+            $file.addEventListener("change", function () {
+                // file API를 사용하기 위해 FileReader 객체 생성
+                const reader = new FileReader();
+                console.log(reader.result);
+
+                // input으로 선택한 텍스트파일을 읽어옴
+                reader.readAsText($file.files[0]);
+
+                // readAsText 읽기 실행이 완료되면 onload이벤트 발생
+                reader.onload = function () {
+                    document.getElementById("preview").textContent =
+                        reader.result;
+                    console.log(reader.result);
+                };
+            });
+        </script>
+    </body>
+</html>

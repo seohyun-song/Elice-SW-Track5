@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>FileReader 이미지 파일 읽기</title>
+    </head>
+    <body>
+        <h3>로컬에 있는 이미지를 바로 브라우저에 표시</h3>
+        <img
+            id="preview"
+            src=""
+            width="700"
+            alt="로컬에 있는 이미지가 보여지는 영역"
+        />
+        <input type="file" id="getfile" accept="image/*" />
+
+        <script>
+            const $file = document.getElementById("getfile");
+
+            $file.addEventListener("change", function () {
+                const reader = new FileReader();
+
+                reader.readAsDataURL($file.files[0]);
+
+                reader.onload = function () {
+                    document
+                        .getElementById("preview")
+                        .setAttribute("src", reader.result);
+                };
+            });
+        </script>
+    </body>
+</html>
