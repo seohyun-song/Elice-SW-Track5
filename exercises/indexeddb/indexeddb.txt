@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        <script>
+            // 1. 데이터베이스 생성 indexedDB.open(databaseName, version)
+            // indexedBD.open() 한다고 해서 그 즉시 데이터베이스가 만들어 지는 것은 아님. 예로 들명 dbReq라고 하는 대기번호를 주는 것
+            const dbReq = indexedDB.open("opentutorials", 1);
+            let db;
+
+            // 데이터베이스를 생성하거나 데이터베이스가 이미 존재한다면 그 데이터베이스를 열거나 이러한 작업이 성공적으로 끝났을때 실행할 함수
+            dbReq.addEventListener("success", function (event) {
+                // 생성된 데이터베이스 접근할 수 있는 레퍼런스 db변수에 저장
+                db = event.target.result;
+            });
+            dbReq.addEventListener("error", function (event) {
+                const error = event.target.error;
+                console.log("error", error.name);
+            });
+
+            // upgradeneed -> 새로운 데이터베이스만들 때, 기존 데이터베이스의 버전을 높일 때
+            // 기존의 데이터베이스가 존재하고 버전변경 없다면 success이벤트만 실행됨
+            dbReq.addEventListener("upgradeneeded", function (event) {
+                db = event.target.result;
+
+                // 기존버전이 없을 때(최초 실행할 때) oldVersion의 값은 0
+                let oldVersion = event.oldVersion;
+                if (oldVersion < 1) {
+                    // 2. object store 생성(첫 번째인자는 object store의 이름, 두 번째 인자는 생성하고자하는 데이터 객체의 식별자로 id를 사용하겠다라는 선언)
+                    db.createObjectStore("topics", {
+                        keyPath: "id",
+                        autoIncrement: true,
+                    });
+                }
+                // 버전1을 가진 사람이 방문한다면 다음 문이 실행. 만약 최초로 방문한다면 if(oldVersion<1){...} if(oldVersion<2) {...} 실행
+                if (oldVersion < 2) {
+                    
+                    db.createObjectStore("topics", {
+                        keyPath: "id",
+                        autoIncrement: true,
+                    });
+                }
+
+            });
+        </script>
+
+        <input
+            type="button"
+            value="add"
+            onclick="
+            // 3. 객체저장소에 데이터 저장(readwrite: 쓰기할 때)
+            // topics 객체저장소에 데이터를 저장할 수 있는 레퍼런스를 얻음
+            let store = db.transaction('topics', 'readwrite').objectStore('topics');
+            // topics 객체저장소에 데이터를 추가
+            let addReq = store.add({
+                title:prompt('title?'),
+                body:prompt('body?')
+            });
+
+            
+            addReq.addEventListener('success', function(event){
+                // 쓰기작업이 완료된 후 실행되어야할 코드
+                console.log(event.target.result); // id값
+            });
+        "
+        />
+        <input
+            type="button"
+            value="get"
+            onclick="
+            let id = Number(prompt('?id'));
+            // 객체저장소에서 데이터를 읽어올 수 있는 레퍼런스를 얻음
+            let store = db.transaction('topics', 'readonly').objectStore('topics');            
+            // 객체저장소에서 데이터를 읽어옴
+            let getReq = store.get(id);
+            getReq.addEventListener('success', function(event){
+                console.log(event.target.result);
+            });
+        "
+        />
+        <input
+            type="button"
+            value="list"
+            onclick="
+            // 객체저장소에서 데이터를 읽어올 수 있는 레퍼런스를 얻음
+            let store = db.transaction('topics', 'readonly').objectStore('topics');            
+            // 객체저장소에서 여러 데이터를 목록으로 가져옴
+            let getAllReq = store.getAll();
+            getAllReq.addEventListener('success', function(event){
+                console.log(event.target.result);
+            });
+        "
+        />
+        <input
+            type="button"
+            value="update"
+            onclick="
+            let store = db.transaction('topics', 'readwrite').objectStore('topics');
+            // 객체저장소에서 데이터를 업데이트
+            let putReq = store.put({
+                id:Number(prompt('id?')),
+                title:prompt('title?'),
+                body:prompt('body?')
+            });
+            putReq.addEventListener('success',function(event){
+                console.log(event);
+            });
+        "
+        />
+        <input
+            type="button"
+            value="delete"
+            onclick="
+            let store = db.transaction('topics', 'readwrite').objectStore('topics');
+            // 객체저장소에서 데이터를 삭제
+            let deleteReq = store.delete(Number(prompt('id?')));
+            deleteReq.addEventListener('success', function(event){
+                console.log(event);
+            });
+        "
+        />
+    </body>
+</html>
