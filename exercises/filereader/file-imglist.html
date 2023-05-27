@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+            }
+
+            ol,
+            ul {
+                list-style: none;
+            }
+
+            img {
+                vertical-align: baseline;
+            }
+
+            .img-list {
+                display: flex;
+            }
+
+            .img-list > li {
+                overflow: hidden;
+                position: relative;
+                width: 300px;
+                height: 300px;
+                border: 1px solid #ddd;
+                box-sizing: border-box;
+            }
+
+            .img-list > li img {
+                width: 100%;
+                transition: all 0.3s;
+            }
+
+            .img-list > li .delete-btn {
+                display: none;
+                position: absolute;
+                right: 0;
+                top: 0;
+                width: 30px;
+                height: 30px;
+                border: none;
+                background-color: rgba(0, 0, 0, 0.5);
+                color: #fff;
+                cursor: pointer;
+            }
+
+            .img-list > li:hover .delete-btn {
+                display: block;
+            }
+
+            .img-list > li:hover img {
+                opacity: 0.3;
+            }
+        </style>
+    </head>
+    <body>
+        <h2>이미지를 업로드하세요</h2>
+        <ul id="img-list" class="img-list"></ul>
+        <input type="file" id="getFile" accept="image/*" />
+
+        <script>
+            const $file = document.getElementById("getFile");
+
+            $file.addEventListener("change", function () {
+                const reader = new FileReader();
+
+                reader.readAsDataURL($file.files[0]);
+
+                reader.onload = function () {
+                    const $imgList = document.getElementById("img-list");
+                    const $li = document.createElement("li");
+                    $li.innerHTML = `
+                        <img src="${reader.result}">
+                        <button class="delete-btn" type="button">삭제</button>
+                    `;
+
+                    $imgList.appendChild($li);
+
+                    $li.querySelector(".delete-btn").addEventListener(
+                        "click",
+                        function () {
+                            $imgList.removeChild($li);
+                        }
+                    );
+                };
+            });
+        </script>
+    </body>
+</html>
