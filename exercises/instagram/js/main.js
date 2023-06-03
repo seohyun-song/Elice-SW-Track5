@@ -1,6 +1,6 @@
-import close from "./assets/close_icon.svg";
-import media from "./assets/media_icon.svg";
-import arrow from "./assets/arrow_back_icon.svg";
+import close from "../assets/close_icon.svg";
+import media from "../assets/media_icon.svg";
+import arrow from "../assets/arrow_back_icon.svg";
 
 const modal = `
                 <div class="modal__close">
