@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>객체 형태의 핸들러와 handleEvent</title>
+	</head>
+	<body>
+		<button id="button">버튼을 클릭해주세요</button>
+		<script>
+			const $btn = document.querySelector("#button");
+
+			class Menu {
+				handleEvent(e) {
+					let method =
+						"on" + e.type[0].toUpperCase() + e.type.slice(1);
+					this[method](e);
+				}
+
+				onMousedown() {
+					$btn.innerHTML = "마우스 버튼을 눌렀습니다.";
+				}
+				onMouseup() {
+					$btn.innerHTML = "마우스 버튼을 뗏습니다.";
+				}
+			}
+
+			const menu = new Menu();
+			// addEventListener가 인수로 객체 형태의 핸들러를 받으면
+			// 이벤트 발생시 obj.handleEvent(e)가 호출
+			$btn.addEventListener("mousedown", menu);
+			$btn.addEventListener("mouseup", menu);
+		</script>
+	</body>
+</html>
