@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>현재 클릭한 요소 인덱스 구하기</title>
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+			}
+
+			ul,
+			ol {
+				list-style: none;
+			}
+
+			.container {
+				padding: 20px;
+				box-sizing: border-box;
+			}
+			#list > li {
+				cursor: pointer;
+			}
+
+			#list > li:hover {
+				background-color: aliceblue;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<ul id="list">
+				<li>1</li>
+				<li>2</li>
+				<li>3</li>
+				<li>4</li>
+			</ul>
+			<h3>현재 클릭한 요소의 인덱스는 <span id="text"></span></h3>
+		</div>
+
+		<script>
+			const $lists = document.querySelectorAll("#list > li");
+			const $text = document.getElementById("text");
+
+			$lists.forEach((el, index) => {
+				el.addEventListener("click", () => {
+					$text.textContent = index;
+				});
+			});
+		</script>
+	</body>
+</html>
