@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>State Management in Vanilla JS</title>
+	</head>
+	<body>
+		<div id="app"></div>
+
+		<script>
+			// https://vijaypushkin.medium.com/dead-simple-state-management-in-vanilla-js-6481c53f7439
+			// _App
+			// It allows the function to reference itself internally
+			// It is not visible outside fo the function
+			const App = function _App() {
+				return `
+                    <h1>Hello Vanilla JS!</h1>
+                    <div>
+                        Example of state management in Vanilla JS
+                    </div>
+                    <br />
+                    <h1>${_App.state.count}</h1>
+                    <button id="button">Increase</button>
+                `;
+			};
+			// App state
+			App.state = {
+				count: 0,
+				increment: () => {
+					App.state.count++;
+					// UI should reflect the state
+					// re-rendering
+					render();
+				},
+			};
+
+			// render
+			// as soon as we update to reflect the state, all the event listeners attached to DOM should nor be losst
+			// and we shouldn't add new event listeners in it's place.
+			const render = () => {
+				document.getElementById("app").innerHTML = App();
+				document
+					.getElementById("button")
+					.addEventListener("click", App.state.increment);
+			};
+			render();
+		</script>
+	</body>
+</html>
