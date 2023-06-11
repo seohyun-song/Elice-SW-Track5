@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>To-do list : Application state example</title>
+		<link rel="stylesheet" href="app.css" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap"
+			rel="stylesheet"
+		/>
+	</head>
+	<body>
+		<h1>Things to do</h1>
+		<h2></h2>
+		<div id="app">
+			<form>
+				<input
+					type="text"
+					class="item"
+					name="item"
+					placeholder="Add new item"
+					autocomplete="off"
+				/>
+				<button type="submit">+ Add</button>
+			</form>
+			<ul></ul>
+		</div>
+		<script src="store.js"></script>
+		<!-- state.js : app의 현재 상태 저장 -->
+		<script src="state.js"></script>
+
+		<!-- app.js : 사용자와 상호작용을 위한 UI 로직 처리 -->
+		<script src="app.js"></script>
+	</body>
+</html>
