@@ -5,7 +5,7 @@ class ConstructorAccess {
     */
 	constructor(public x: string) {}
 
-	// public x;
+	// public x:string;
 	// constructor(x: string) {
 	//     this.x = x;
 	// }

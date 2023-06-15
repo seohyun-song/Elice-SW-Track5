@@ -9,6 +9,8 @@ let tuple: [string, number] = ["hello", 10];
 // tuple = [10, "str"];
 // tuple.push(true);
 
+let coordinates: [x: number, y: number, z: number] = [1, 2, 3];
+
 // enum: 열거형은 숫자값 집합에 이름을 지정한 것
 enum Color1 {
 	Red,
