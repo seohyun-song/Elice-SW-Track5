@@ -1,0 +1,13 @@
+.todo-list {
+	max-width: 500px;
+	margin: 0 auto;
+	border-radius: 16px;
+	padding: 20px;
+	background-color: #fff;
+}
+
+.todo-list .title {
+	margin: 0;
+	padding-bottom: 16px;
+	border-bottom: 1px solid #eee;
+}

@@ -1,4 +1,5 @@
 import React, { useState, useCallback } from "react";
+import "./InsertForm.css";
 
 const InsertForm = ({ onInsert }) => {
 	const [inputValue, setInputValue] = useState("");
@@ -18,12 +19,13 @@ const InsertForm = ({ onInsert }) => {
 		[onInsert, inputValue]
 	);
 	return (
-		<form onSubmit={handleSubmit}>
+		<form onSubmit={handleSubmit} className="list-form">
 			<input
 				value={inputValue}
+				placeholder="오늘의 할 일을 입력해주세요."
 				onChange={(event) => setInputValue(event.target.value)}
 			/>
-			<button type="submit">등록</button>
+			<button type="submit">+</button>
 		</form>
 	);
 };

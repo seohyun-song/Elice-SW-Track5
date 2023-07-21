@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import "./App.css";
 import InsertForm from "./components/InsertForm";
 import ListView from "./components/ListView";
 
@@ -32,7 +33,8 @@ function App() {
 		});
 	};
 	return (
-		<div className="App">
+		<div className="todo-list">
+			<h2 className="title">To Do List</h2>
 			<ListView
 				todoList={todoList}
 				onComplete={handleComplete}

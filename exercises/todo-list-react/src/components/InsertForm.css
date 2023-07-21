@@ -1,0 +1,21 @@
+.list-form {
+	display: flex;
+	margin-top: 20px;
+}
+
+.list-form input {
+	flex: 1;
+	height: 46px;
+	padding: 0 10px;
+	border: none;
+	outline: none;
+}
+
+.list-form button {
+	width: 46px;
+	height: 46px;
+	border-radius: 50%;
+	background: #38e54d;
+	color: #fff;
+	font-size: 24px;
+}

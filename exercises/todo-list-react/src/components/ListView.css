@@ -1,0 +1,45 @@
+.list-view {
+	margin-top: 20px;
+}
+
+.list-view > ol > li + li {
+	margin-top: 10px;
+}
+
+.list-view > ol > li {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.list-view > ol > li span {
+	flex: 1;
+	position: relative;
+	padding: 0 10px;
+}
+
+.list-view > ol > li span::before {
+	content: "";
+	position: absolute;
+	left: 0;
+	top: 50%;
+	transform: translateY(-50%);
+	width: 0%;
+	height: 2px;
+	background-color: #ddd;
+	transition: width 0.2s;
+}
+
+.list-view > ol > li.complete span::before {
+	width: 100%;
+}
+
+.list-view > ol > li .btn-complete,
+.list-view > ol > li .btn-remove {
+	height: 30px;
+	margin-left: 10px;
+	padding: 0 10px;
+	border: 1px solid #eee;
+	border-radius: 4px;
+	box-sizing: border-box;
+}

@@ -1,8 +1,9 @@
 import React from "react";
+import "./ListView.css";
 
 const ListView = ({ todoList, onComplete, onRemove }) => {
 	return (
-		<div>
+		<div className="list-view">
 			<ol>
 				{todoList.map((item, index) => {
 					return (
@@ -10,6 +11,7 @@ const ListView = ({ todoList, onComplete, onRemove }) => {
 							<span>{item.value}</span>
 							<button
 								type="button"
+								className="btn-complete"
 								onClick={() => {
 									if (typeof onComplete === "function") {
 										onComplete(index);
@@ -20,6 +22,7 @@ const ListView = ({ todoList, onComplete, onRemove }) => {
 							</button>
 							<button
 								type="button"
+								className="btn-remove"
 								onClick={() => {
 									if (typeof onRemove === "function") {
 										onRemove(index);
