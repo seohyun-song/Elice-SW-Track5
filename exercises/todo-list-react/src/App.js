@@ -1,10 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import "./App.css";
 import InsertForm from "./components/InsertForm";
 import ListView from "./components/ListView";
 
 function App() {
 	const [todoList, setTodoList] = useState([]);
+	const isLimitReached = useMemo(() => {
+		return todoList.length >= 10;
+	}, [todoList]);
 	const handleInsert = (value) => {
 		setTodoList((current) => {
 			const newTodoList = [...current];
@@ -40,7 +43,21 @@ function App() {
 				onComplete={handleComplete}
 				onRemove={handleRemove}
 			/>
-			<InsertForm onInsert={handleInsert} />
+			{isLimitReached && (
+				<div
+					style={{
+						padding: "8px 16px",
+						border: "1px solid #FA466A",
+						backgroundColor: "#feecf0",
+						color: "#FA466A",
+						marginBottom: 16,
+						marginTop: 16,
+					}}
+				>
+					※ 할 일 목록이 너무 많습니다.
+				</div>
+			)}
+			<InsertForm onInsert={handleInsert} disabled={isLimitReached} />
 		</div>
 	);
 }

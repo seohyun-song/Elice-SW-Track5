@@ -7,8 +7,13 @@ const ListView = ({ todoList, onComplete, onRemove }) => {
 			<ol>
 				{todoList.map((item, index) => {
 					return (
-						<li key={item.key}>
-							<span>{item.value}</span>
+						<li
+							key={item.key}
+							className={item.isCompleted ? "complete" : ""}
+						>
+							<div>
+								<span>{item.value}</span>
+							</div>
 							<button
 								type="button"
 								className="btn-complete"
