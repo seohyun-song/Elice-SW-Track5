@@ -1,6 +1,6 @@
 import React from "react";
 import "./App.css";
-import MathProblem from "./MathProblemImport/MathProblem";
+import MathProblem from "./MathProblemStyled/MathProblem";
 
 function App() {
 	return (
