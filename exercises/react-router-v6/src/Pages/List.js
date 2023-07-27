@@ -9,6 +9,7 @@ const List = () => {
 	return (
 		<div>
 			<h1>List</h1>
+			<p>리스트 페이지입니다.</p>
 			<button onClick={handleClick}>디테일로 이동</button>
 		</div>
 	);

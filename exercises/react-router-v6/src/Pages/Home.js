@@ -10,6 +10,7 @@ const Home = () => {
 	return (
 		<div>
 			<h1>Home</h1>
+			<p>홈 페이지 입니다.</p>
 			<button onClick={handleClick}>리스트로 이동</button>
 		</div>
 	);

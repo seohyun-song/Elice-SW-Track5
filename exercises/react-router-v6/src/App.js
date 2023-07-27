@@ -1,10 +1,25 @@
 import "./App.css";
-import { Outlet } from "react-router-dom";
+import { Outlet, Link } from "react-router-dom";
 
 function App() {
 	return (
 		<>
-			<Outlet></Outlet>
+			<div className="navbar">
+				<ul>
+					<li>
+						<Link to="/">Home</Link>
+					</li>
+					<li>
+						<Link to="/list">List</Link>
+					</li>
+					<li>
+						<Link to="/detail">Detail</Link>
+					</li>
+				</ul>
+			</div>
+			<div className="box-container">
+				<Outlet></Outlet>
+			</div>
 		</>
 	);
 }
