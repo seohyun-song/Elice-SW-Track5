@@ -12,7 +12,7 @@ async function getUsers() {
 }
 
 export default function Users() {
-	const [state, refetch] = useAsync(getUsers, []);
+	const [state, refetch] = useAsync(getUsers, [], true);
 
 	const { loading, data: users, error } = state;
 

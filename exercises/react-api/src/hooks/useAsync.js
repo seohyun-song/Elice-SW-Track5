@@ -34,13 +34,11 @@ function reducer(state, action) {
 			throw new Error(`Unhandled action type: ${action.type}`);
 	}
 }
-/**
- *
- * @param {function} callback
- * @param {array} deps
- * @returns
- */
-export default function useAsync(callback, deps = []) {
+
+// Users 컴포넌트는 컴포넌트가 처음 렌더링 되는 시점부터 API 요청을 하고 있습니다.
+// 특정 버튼을 눌렀을 때만 API를 요청하고 싶다면?
+// useAsync의 세번째 파라미터에 skip을 넣어서 필요한 시점에만 요청할 수 있도록 합니다.
+export default function useAsync(callback, deps = [], skip = false) {
 	const [state, dispatch] = useReducer(reducer, {
 		loading: false,
 		data: null,
@@ -58,6 +56,7 @@ export default function useAsync(callback, deps = []) {
 	};
 
 	useEffect(() => {
+		if (skip) return;
 		fetchData();
 	}, deps);
 	// 요청 관련 상태, fetchData 함수 반환
