@@ -1,58 +1,18 @@
-import React, { useEffect, useReducer } from "react";
+import React from "react";
 import axios from "axios";
+import useAsync from "../hooks/useAsync";
 
-/* 리듀서 */
-// useState의 setState 함수를 여러 번 사용하지 않아도 된다.
-// 리듀서 로직을 분리했으므로 다른곳에 쉽게 재사용 할 수 있다.
-function reducer(state, action) {
-	switch (action.type) {
-		case "LOADING":
-			return {
-				loading: true,
-				data: null,
-				error: null,
-			};
-		case "SUCCESS":
-			return {
-				loading: false,
-				data: action.data,
-				error: null,
-			};
-		case "ERROR":
-			return {
-				loading: false,
-				data: null,
-				error: action.error,
-			};
-		default:
-			throw new Error(`Unhandled action type: ${action.type}`);
-	}
+// useAsync 에서 Promise이 결과를 바로 data에 담기 때문에,
+// 요청을 한 이후 response에서 data 추출하여 반환하는 함수를 따로 만들었습니다.
+async function getUsers() {
+	const response = await axios.get(
+		"https://jsonplaceholder.typicode.com/users"
+	);
+	return response.data;
 }
 
 export default function Users() {
-	/* useReducer :  상태 업데이트 로직 분리 */
-	const [state, dispatch] = useReducer(reducer, {
-		loading: false,
-		data: null,
-		error: null,
-	});
-
-	const fetchUsers = async () => {
-		dispatch({ type: "LOADING" });
-		try {
-			const response = await axios.get(
-				"https://jsonplaceholder.typicode.com/users"
-			);
-			dispatch({ type: "SUCCESS", data: response.data });
-		} catch (e) {
-			dispatch({ type: "ERROR", error: e });
-		}
-	};
-
-	/* useEffect(()=> {}, []): 컴포넌트가 마운트 됐을때 실행(첫 렌더링) */
-	useEffect(() => {
-		fetchUsers();
-	}, []);
+	const [state, refetch] = useAsync(getUsers, []);
 
 	const { loading, data: users, error } = state;
 
@@ -68,7 +28,7 @@ export default function Users() {
 					</li>
 				))}
 			</ul>
-			<button onClick={fetchUsers}>다시 불러오기</button>
+			<button onClick={refetch}>다시 불러오기</button>
 		</>
 	);
 }
